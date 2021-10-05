@@ -7,4 +7,5 @@ This project is in a very early stage, but I hope to add new features and automa
 The tool is written in Python and leverages global hotkeys to automate common taks required during pentesting.  
 
 ## Features
-- **Stabilize Shell** - Ctrl+Alt+S
+- **Stabilize reverse shell using Python 3** - Ctrl+Alt+1
+- **Search for SUID** - Ctrl+Alt+2
