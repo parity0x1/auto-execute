@@ -2,6 +2,7 @@
 
 import pyautogui
 import time
+import signal
 import sys
 from pynput import keyboard
 
@@ -17,7 +18,8 @@ def welcome():
     print ("    \/_/                                \/__/                      ")
     print ("                                                autoexecute alpha  ")
     print()
-    print("<ctrl>+<alt>+s - Stabalize reverse shell using Python 3")
+    print("<ctrl>+<alt>+1 - Stabilize reverse shell using Python 3")
+    print("<ctrl>+<alt>+2 - Search for SUID")
     print("<ctrl>+<alt>+q - Exit/Quit")
     print()
 
@@ -26,11 +28,15 @@ def wait():
     time.sleep(5)
 
 
+def pause():
+    time.sleep(2)
+
+
 def stabilize_shell():
-    print ('Stabilizing shell using Python3')
+    print ('Ready to stabilizing shell using Python3. Click on target window now...')
     wait()
     pyautogui.typewrite("python3 -c 'import pty; pty.spawn(\"/bin/bash\");'")
-    wait()
+    pause()
     pyautogui.hotkey('enter')
     pyautogui.hotkey('ctrl','z')
     pyautogui.typewrite("stty raw -echo")
@@ -40,10 +46,29 @@ def stabilize_shell():
     pyautogui.typewrite("export TERM=xterm")
     pyautogui.hotkey('enter')
 
-def on_activate_s():
-    stabilize_shell()
+
+def suid():
+    print ('Ready to search for SUID. Click on target window now...')
+    wait()
+    pyautogui.typewrite("find / -perm -4000 2>/dev/null")
+    pause()
+    pyautogui.hotkey('enter')
+
+
+def exit():
+    sys.exit(0)
+
+
+def signal_handler(sig, frame):
+    exit()
+
+signal.signal(signal.SIGINT, signal_handler)
 
 welcome()
 
-with keyboard.GlobalHotKeys({'<ctrl>+<alt>+s': on_activate_s}) as h:
-    h.join()
+with keyboard.GlobalHotKeys({
+    '<ctrl>+<alt>+1':stabilize_shell,
+    '<ctrl>+<alt>+2':suid,
+    '<ctrl>+<alt>+q':exit
+    }) as listener:
+    listener.join()
