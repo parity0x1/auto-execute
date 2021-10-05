@@ -33,7 +33,7 @@ def pause():
 
 
 def stabilize_shell():
-    print ('Ready to stabilizing shell using Python3. Click on target window now...')
+    print ('Ready to stabilize shell using Python3. Click on target window now...')
     wait()
     pyautogui.typewrite("python3 -c 'import pty; pty.spawn(\"/bin/bash\");'")
     pause()
